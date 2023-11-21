@@ -110,7 +110,7 @@ public class Fish implements Runnable {
         }
         boolean isLocationFree = false;
 
-        int x = 0, y = 0;
+        int x, y;
 
         while (!isLocationFree) {
             x = getXRandomLocation();
