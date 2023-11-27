@@ -130,7 +130,7 @@ public class Fish implements Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            printAquarium();
+//            printAquarium();
         }
     }
 
@@ -163,10 +163,7 @@ public class Fish implements Runnable {
             fishesInAquarium[x][y] = this;
             isLocationFree = true;
             System.out.printf("\n%s fish moved to [%s,%s], moves left: %s\n\n", this, x, y, numberOfMovesLeft);
-
         }
-//        }
-
         return isLocationFree;
     }
 
@@ -190,8 +187,8 @@ public class Fish implements Runnable {
             return;
         }
 
-        System.out.printf("New Fish has been created: Name %s\n\n",
-                genderState == 0 ? "M-" + fishNumber : "F-" + fishNumber);
+        System.out.printf("New Fish has been created: Name %s%s\n\n",
+                genderState == 0 ? "M-" : "F-", fishNumber);
 
         Fish newBorFish = new Fish(
                 Main.random.nextInt(3, averageAquariumSize.get()),
