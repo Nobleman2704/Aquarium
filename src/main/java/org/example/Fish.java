@@ -144,8 +144,6 @@ public class Fish implements Runnable {
 
     public boolean checkLocation() {
         boolean isLocationFree;
-        int x = this.x;
-        int y = this.y;
         Fish fish1;
         fish1 = fishesInAquarium[x][y];
         if (fish1 != null) {
