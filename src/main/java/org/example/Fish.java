@@ -135,11 +135,11 @@ public class Fish implements Runnable {
     }
 
     public int getXRandomLocation() {
-        return (int) (Math.random() * aquariumHeight.get());
+        return (int) (Math.random() * aquariumHeight);
     }
 
     public int getYRandomLocation() {
-        return (int) (Math.random() * aquariumWidth.get());
+        return (int) (Math.random() * aquariumWidth);
     }
 
     public boolean checkLocation() {
@@ -182,7 +182,7 @@ public class Fish implements Runnable {
 
         numberOfFishesInAquarium.incrementAndGet();
 
-        if (numberOfFishesInAquarium.get() >= availableSpaceInAquarium.get()) {
+        if (numberOfFishesInAquarium.get() >= availableSpaceInAquarium) {
             isReachedLimit.set(true);
             return;
         }
@@ -191,7 +191,7 @@ public class Fish implements Runnable {
                 genderState == 0 ? "M-" : "F-", fishNumber);
 
         Fish newBorFish = new Fish(
-                Main.random.nextInt(3, averageAquariumSize.get()),
+                Main.random.nextInt(3, averageAquariumSize),
                 fishNumber,
                 genderState);
 

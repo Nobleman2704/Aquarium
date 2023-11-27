@@ -9,13 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
     public static List<Thread> fishThreadList;
     public static Random random;
-    volatile public static AtomicInteger aquariumHeight;
-    volatile public static AtomicInteger aquariumWidth;
-    volatile public static AtomicInteger availableSpaceInAquarium;
+    public static int aquariumHeight;
+    public static int aquariumWidth;
+    public static int availableSpaceInAquarium;
     volatile public static AtomicInteger numberOfFishesInAquarium;
     volatile public static AtomicInteger numberOfMaleFish;
     volatile public static AtomicInteger numberOfFemaleFish;
-    volatile public static AtomicInteger averageAquariumSize;
+    public static int averageAquariumSize;
     volatile public static Fish[][] fishesInAquarium;
     volatile public static AtomicBoolean isReachedLimit;
 
@@ -27,27 +27,25 @@ public class Main {
 
         int aquariumHeight = random.nextInt(3, aquariumWidth);
 
-        Main.aquariumWidth = new AtomicInteger(aquariumWidth);
+        Main.aquariumWidth = aquariumWidth;
 
-        Main.aquariumHeight = new AtomicInteger(aquariumHeight);
+        Main.aquariumHeight = aquariumHeight;
 
         Main.fishesInAquarium =
-                new Fish[Main.aquariumHeight.get()][Main.aquariumWidth.get()];
+                new Fish[Main.aquariumHeight][Main.aquariumWidth];
 
-        Main.averageAquariumSize = new AtomicInteger(
-                (Main.aquariumHeight.get() + Main.aquariumWidth.get()) / 2);
+        Main.averageAquariumSize = (Main.aquariumHeight + Main.aquariumWidth) / 2;
 
-        availableSpaceInAquarium = new AtomicInteger(
-                Main.aquariumHeight.get() * Main.aquariumWidth.get());
+        availableSpaceInAquarium = Main.aquariumHeight * Main.aquariumWidth;
 
         System.out.printf("\n\nSize have been approved. Aquarium size: [%s,%s]\n\n",
                 aquariumHeight, aquariumWidth);
 
         int numberOfMaleFish = random.nextInt(2,
-                Math.min(Main.aquariumWidth.get(), Main.aquariumHeight.get()));
+                Math.min(Main.aquariumWidth, Main.aquariumHeight));
 
         int numberOfFemaleFish = random.nextInt(2,
-                Math.min(Main.aquariumWidth.get(), Main.aquariumHeight.get()));
+                Math.min(Main.aquariumWidth, Main.aquariumHeight));
 
         Main.numberOfMaleFish = new AtomicInteger(numberOfMaleFish);
 
@@ -70,7 +68,7 @@ public class Main {
         numberOfFishesInAquarium = new AtomicInteger(
                 Main.numberOfMaleFish.get() + Main.numberOfFemaleFish.get());
 
-        if (numberOfFishesInAquarium.get() >= availableSpaceInAquarium.get())
+        if (numberOfFishesInAquarium.get() >= availableSpaceInAquarium)
             Main.isReachedLimit.set(true);
 
         if (isReachedLimit.get()) return;
@@ -81,7 +79,7 @@ public class Main {
         //male fish
         for (int i = 0; i < Main.numberOfMaleFish.get(); i++) {
             Thread thread = new Thread(
-                    new Fish(random.nextInt(3, averageAquariumSize.get()),
+                    new Fish(random.nextInt(3, averageAquariumSize),
                             i + 1,
                             0));
             fishThreadList.add(thread);
@@ -90,7 +88,7 @@ public class Main {
         //female fish
         for (int i = 0; i < Main.numberOfFemaleFish.get(); i++) {
             Thread thread = new Thread(
-                    new Fish(random.nextInt(3, averageAquariumSize.get()),
+                    new Fish(random.nextInt(3, averageAquariumSize),
                             i + 1,
                             1));
             fishThreadList.add(thread);
