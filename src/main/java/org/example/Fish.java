@@ -94,15 +94,15 @@ public class Fish implements Runnable {
     public void setInitialRandomLocation() {
         int x = getXRandomLocation();
         int y = getYRandomLocation();
-        synchronized (fishesInAquarium) {
-            while (fishesInAquarium[x][y] != null) {
-                x = getXRandomLocation();
-                y = getYRandomLocation();
-            }
-            this.x = x;
-            this.y = y;
-            fishesInAquarium[x][y] = this;
+
+        while (fishesInAquarium[x][y] != null) {
+            x = getXRandomLocation();
+            y = getYRandomLocation();
         }
+        this.x = x;
+        this.y = y;
+        fishesInAquarium[x][y] = this;
+
     }
 
     public void setNextRandomLocation() {
@@ -191,7 +191,7 @@ public class Fish implements Runnable {
         }
 
         System.out.printf("New Fish has been created: Name %s\n\n",
-                genderState == 0 ? "M-" : "F-" + fishNumber);
+                genderState == 0 ? "M-" + fishNumber : "F-" + fishNumber);
 
         Fish newBorFish = new Fish(
                 Main.random.nextInt(3, averageAquariumSize.get()),
