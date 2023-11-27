@@ -32,7 +32,7 @@ public class Fish implements Runnable {
             //setting new location
             setNextRandomLocation();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -58,6 +58,11 @@ public class Fish implements Runnable {
 
 
     public void printAquarium() {
+//        try {
+//            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         System.out.printf("""
                 Number of male fishes = %s
                 Number of female fishes = %s
@@ -76,8 +81,9 @@ public class Fish implements Runnable {
         System.out.println();
         System.out.println("***".repeat(12));
         System.out.println();
+
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -107,25 +113,25 @@ public class Fish implements Runnable {
     public void setRandomLocation() {
         synchronized (fishesInAquarium) {
             fishesInAquarium[x][y] = null;
-        }
-        boolean isLocationFree = false;
+            boolean isLocationFree = false;
 
-        int x, y;
+            int x, y;
 
-        while (!isLocationFree) {
-            x = getXRandomLocation();
-            y = getYRandomLocation();
-            this.x = x;
-            this.y = y;
-            isLocationFree = checkLocation();
-            if (isReachedLimit.get()) return;
-        }
-        synchronized (fishThreadList) {
+            while (!isLocationFree) {
+                x = getXRandomLocation();
+                y = getYRandomLocation();
+                this.x = x;
+                this.y = y;
+                isLocationFree = checkLocation();
+                if (isReachedLimit.get()) return;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             printAquarium();
         }
-
-        //provided method below is to show the result for moving of that fish
-//        printAquarium();
     }
 
     public int getXRandomLocation() {
@@ -141,9 +147,7 @@ public class Fish implements Runnable {
         int x = this.x;
         int y = this.y;
         Fish fish1;
-        synchronized (fishesInAquarium) {
-            fish1 = fishesInAquarium[x][y];
-        }
+        fish1 = fishesInAquarium[x][y];
         if (fish1 != null) {
             if (!fish1.getGender().equals(this.getGender())) {
                 System.out.printf("%s and %s have met\n", this, fish1);
@@ -156,15 +160,12 @@ public class Fish implements Runnable {
             isLocationFree = false;
 
         } else {
-            synchronized (fishesInAquarium) {
-                if (fishesInAquarium[this.x][this.y] != null) {
-                    fishesInAquarium[this.x][this.y] = this;
-                    isLocationFree = true;
-                    System.out.printf("\n%s fish moved to [%s,%s], moves left: %s\n\n", this, x, y, numberOfMovesLeft);
-                } else isLocationFree = false;
-            }
+            fishesInAquarium[x][y] = this;
+            isLocationFree = true;
+            System.out.printf("\n%s fish moved to [%s,%s], moves left: %s\n\n", this, x, y, numberOfMovesLeft);
 
         }
+//        }
 
         return isLocationFree;
     }
