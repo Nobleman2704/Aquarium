@@ -135,11 +135,11 @@ public class Fish implements Runnable {
     }
 
     public int getXRandomLocation() {
-        return (int) (Math.random() * aquariumHeight);
+        return random.nextInt(aquariumHeight);
     }
 
     public int getYRandomLocation() {
-        return (int) (Math.random() * aquariumWidth);
+        return random.nextInt(aquariumWidth);
     }
 
     public boolean checkLocation() {
@@ -167,7 +167,7 @@ public class Fish implements Runnable {
 
     //creates new fish
     public void createNewFish() {
-        int genderState = (int) (Math.random() * 2);
+        int genderState = random.nextInt(2);
         int fishNumber;
 
         if (genderState == 1)
@@ -186,7 +186,7 @@ public class Fish implements Runnable {
                 genderState == 0 ? "M-" : "F-", fishNumber);
 
         Fish newBorFish = new Fish(
-                Main.random.nextInt(3, averageAquariumSize),
+                random.nextInt(3, averageAquariumSize),
                 fishNumber,
                 genderState);
 
