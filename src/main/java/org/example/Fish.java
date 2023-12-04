@@ -170,13 +170,10 @@ public class Fish implements Runnable {
         int genderState = (int) (Math.random() * 2);
         int fishNumber;
 
-        if (genderState == 1) {
-            fishNumber = numberOfFemaleFish.get() + 1;
-            numberOfFemaleFish.incrementAndGet();
-        } else {
-            fishNumber = numberOfMaleFish.get() + 1;
-            numberOfMaleFish.incrementAndGet();
-        }
+        if (genderState == 1)
+            fishNumber = numberOfFemaleFish.incrementAndGet();
+        else
+            fishNumber = numberOfMaleFish.incrementAndGet();
 
         numberOfFishesInAquarium.incrementAndGet();
 
