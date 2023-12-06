@@ -197,8 +197,7 @@ public class Fish implements Runnable {
 
     @Override
     public String toString() {
-        String word = (this.gender.equals(Gender.MALE)) ? "M-" : "F-";
-        return "|" + word +
-                this.fishNum + "|";
+        String fishName = String.format("%s%s", (gender.equals(Gender.MALE)) ? "M-" : "F-", fishNum);
+        return String.format("|%s|", fishName);
     }
 }
