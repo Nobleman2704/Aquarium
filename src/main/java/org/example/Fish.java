@@ -56,7 +56,6 @@ public class Fish implements Runnable {
         numberOfFishesInAquarium.decrementAndGet();
     }
 
-
     public void printAquarium() {
 //        try {
 //            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -92,17 +91,11 @@ public class Fish implements Runnable {
     //it sets initial random location while putting the fishes into
     //the aquarium
     public void setInitialRandomLocation() {
-        int x = getXRandomLocation();
-        int y = getYRandomLocation();
-
         while (fishesInAquarium[x][y] != null) {
             x = getXRandomLocation();
             y = getYRandomLocation();
         }
-        this.x = x;
-        this.y = y;
         fishesInAquarium[x][y] = this;
-
     }
 
     public void setNextRandomLocation() {
@@ -115,13 +108,10 @@ public class Fish implements Runnable {
             fishesInAquarium[x][y] = null;
             boolean isLocationFree = false;
 
-            int x, y;
-
             while (!isLocationFree) {
                 x = getXRandomLocation();
                 y = getYRandomLocation();
-                this.x = x;
-                this.y = y;
+
                 isLocationFree = checkLocation();
                 if (isReachedLimit.get()) return;
             }
@@ -156,7 +146,6 @@ public class Fish implements Runnable {
                 System.out.printf("Choosing another location for %s\n\n", this);
 
             isLocationFree = false;
-
         } else {
             fishesInAquarium[x][y] = this;
             isLocationFree = true;
@@ -185,15 +174,14 @@ public class Fish implements Runnable {
         System.out.printf("New Fish has been created: Name %s%s\n\n",
                 genderState == 0 ? "M-" : "F-", fishNumber);
 
-        Fish newBorFish = new Fish(
+        //it creates newborn fish and starts inside the tread
+        Thread thread = new Thread( new Fish(
                 random.nextInt(3, averageAquariumSize),
                 fishNumber,
-                genderState);
+                genderState));
 
-        Thread thread = new Thread(newBorFish);
         thread.start();
     }
-
 
     @Override
     public String toString() {
