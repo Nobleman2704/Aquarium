@@ -23,27 +23,34 @@ public class Main {
     public static void main(String[] args) {
         random = new Random();
 
+        //initializing aquarium width
         int aquariumWidth = random.nextInt(5, 10);
 
+        //initializing aquarium height
         int aquariumHeight = random.nextInt(3, aquariumWidth);
 
         Main.aquariumWidth = aquariumWidth;
 
         Main.aquariumHeight = aquariumHeight;
 
+        //crating doubled array as sample aquarium (rows = height, cols = width)
         Main.fishesInAquarium =
                 new Fish[Main.aquariumHeight][Main.aquariumWidth];
 
+        //setting average aquarium size for
         Main.averageAquariumSize = (Main.aquariumHeight + Main.aquariumWidth) / 2;
 
+        //setting available space multiplying height and width
         availableSpaceInAquarium = Main.aquariumHeight * Main.aquariumWidth;
 
         System.out.printf("\n\nSize have been approved. Aquarium size: [%s,%s]\n\n",
                 aquariumHeight, aquariumWidth);
 
+        //creating initial male fishes
         int numberOfMaleFish = random.nextInt(2,
                 Math.min(Main.aquariumWidth, Main.aquariumHeight));
 
+        //creating initial female fishes
         int numberOfFemaleFish = random.nextInt(2,
                 Math.min(Main.aquariumWidth, Main.aquariumHeight));
 
@@ -57,42 +64,47 @@ public class Main {
                                      
                 """, Main.numberOfMaleFish, Main.numberOfFemaleFish);
 
+        //this 1.5 sek sleeping is for showing info about initial
+        //parameters about aquarium
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
+        //setting false, it means aquarium is not full
         Main.isReachedLimit = new AtomicBoolean(false);
 
+        //all fishes in the aquarium, addition of male and female fishes
         numberOfFishesInAquarium = new AtomicInteger(
                 Main.numberOfMaleFish.get() + Main.numberOfFemaleFish.get());
 
+        //it validates that whether 'numberOfFishesInAquarium' is over from
+        //'availableSpaceInAquarium' field, if it is, it stops the program
         if (numberOfFishesInAquarium.get() >= availableSpaceInAquarium)
             Main.isReachedLimit.set(true);
 
+        //if 'isReachedLimit' is true, program stops
         if (isReachedLimit.get()) return;
 
         fishThreadList = new LinkedList<>();
 
         //putting male and female fishes into aquarium...
-        //male fish
+
+        //creating initial male fish
         for (int i = 0; i < Main.numberOfMaleFish.get(); i++) {
-            Thread thread = new Thread(
+            fishThreadList.add(new Thread(
                     new Fish(random.nextInt(3, averageAquariumSize),
                             i + 1,
-                            0));
-            fishThreadList.add(thread);
+                            0)));
         }
 
-        //female fish
-        for (int i = 0; i < Main.numberOfFemaleFish.get(); i++) {
-            Thread thread = new Thread(
+        //creating initial female fish
+        for (int i = 0; i < Main.numberOfFemaleFish.get(); i++)
+            fishThreadList.add(new Thread(
                     new Fish(random.nextInt(3, averageAquariumSize),
                             i + 1,
-                            1));
-            fishThreadList.add(thread);
-        }
+                            1)));
 
         //after that, the moving process will begin
         for (Thread thread1 : fishThreadList)
